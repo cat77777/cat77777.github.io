@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>The Lotto Game</title>
+		<link rel="stylesheet" href="mystyle.css">
+	</head>
+	<body>
+        <p id="title">請輸入"1~10"三個數字:</p>
+		<input type="number" id="n1" min="1" max="10">
+		<input type="number" id="n2" min="1" max="10">
+		<input type="number" id="n3" min="1" max="10">
+		<br>
+		<button onclick="start()">開獎</button>
+		<button onclick="reset()">重新開始</button>
+		<p id="r"></p>
+		
+		<script>
+		
+			function generateNumbers() {
+				var winningNumbers = [];
+				while (winningNumbers.length < 3) {
+					var randomNumber = Math.floor(Math.random() * 10) + 1;
+					if (winningNumbers.indexOf(randomNumber) === -1) {
+						winningNumbers.push(randomNumber);
+					}
+				}
+				return winningNumbers;
+			}
+			
+			function start() {
+				var n1 = parseInt(document.getElementById("n1").value);
+				var n2 = parseInt(document.getElementById("n2").value);
+				var n3 = parseInt(document.getElementById("n3").value);
+
+				if (isNaN(n1) || isNaN(n2) || isNaN(n3) || n1 < 1 || n1 > 10 || n2 < 1 || n2 > 10 || n3 < 1 || n3 > 10) {
+					alert("請輸入有效數字 (1~10)");
+					reset();
+					return;
+				}
+
+				if (n1 === n2 || n1 === n3 || n2 === n3) {
+					alert("請輸入三個互不相等的數字");
+					reset();
+					return;
+				}
+
+				var winningNumbers = generateNumbers();
+				var matches = checkNumbers(n1, n2, n3, winningNumbers);
+				var prize = totalPrize(matches);
+
+				Result(matches, prize);
+			}
+
+			function checkNumbers(n1, n2, n3, winningNumbers) {
+				var matches = 0;
+				if (winningNumbers.indexOf(n1) !== -1) {
+					matches++;
+				}
+				if (winningNumbers.indexOf(n2) !== -1) {
+					matches++;
+				}
+				if (winningNumbers.indexOf(n3) !== -1) {
+					matches++;
+				}
+				return matches;
+			}
+
+			function totalPrize(matches) {
+				if (matches === 3) {
+					return "恭喜您中頭獎!";
+				} 
+				else if (matches === 2) {
+					return "恭喜您中貳獎!";
+				} 
+				else if (matches === 1) {
+					return "恭喜您中參獎!";
+				} 
+				else {
+					return "很遺憾，您這次沒有中獎，下次再來!";
+				}
+			}
+
+			function Result(matches, prize) {
+				var result = document.getElementById("r");
+				result.innerHTML = "結果：" + prize;
+
+				if (matches > 0) {
+					var winnings = calculateWinnings(matches);
+					result.innerHTML += " 獎金總金額：" + winnings + "元";
+				}
+			}
+
+			function calculateWinnings(matches) {
+				var prizeAmounts = {"恭喜您中頭獎!": 100, "恭喜您中貳獎!": 50, "恭喜您中參獎!": 10};
+				return prizeAmounts[totalPrize(matches)];
+			}
+
+			function reset() {
+			document.getElementById("n1").value = "";
+			document.getElementById("n2").value = "";
+			document.getElementById("n3").value = "";
+			document.getElementById("r").innerHTML = "";
+			}
+			
+		</script>
+		
+	</body>
+</html>
