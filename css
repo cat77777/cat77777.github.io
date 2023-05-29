@@ -1,1 +1,15 @@
+body {
+	text-align: center;
+}
 
+p {
+	color: #AE0000;
+}
+
+#title {
+		color: #FFD2D2;
+		background-color: #FF5151;
+		text-shadow: 3px 3px 6px #000000;
+}
+
+/* 以上為(3) */
